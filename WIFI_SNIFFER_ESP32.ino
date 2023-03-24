@@ -13,7 +13,7 @@
 
 uint8_t level = 0, channel = 1;
 
-static wifi_country_t wifi_country = {.cc="CN", .schan = 1, .nchan = 13}; //Most recent esp32 library struct
+static wifi_country_t wifi_country = {.cc="MX", .schan = 1, .nchan = 13}; //Most recent esp32 library struct
 
 typedef struct {
   unsigned frame_ctrl:16;
@@ -83,7 +83,8 @@ void wifi_sniffer_packet_handler(void* buff, wifi_promiscuous_pkt_type_t type)
   printf("PACKET TYPE=%s, CHAN=%02d, RSSI=%02d,"
     " ADDR1=%02x:%02x:%02x:%02x:%02x:%02x,"
     " ADDR2=%02x:%02x:%02x:%02x:%02x:%02x,"
-    " ADDR3=%02x:%02x:%02x:%02x:%02x:%02x\n",
+    " ADDR3=%02x:%02x:%02x:%02x:%02x:%02x,"
+    " ADDR4=%02x:%02x:%02x:%02x:%02x:%02x\n",
     wifi_sniffer_packet_type2str(type),
     ppkt->rx_ctrl.channel,
     ppkt->rx_ctrl.rssi,
@@ -95,7 +96,10 @@ void wifi_sniffer_packet_handler(void* buff, wifi_promiscuous_pkt_type_t type)
     hdr->addr2[3],hdr->addr2[4],hdr->addr2[5],
     /* ADDR3 */
     hdr->addr3[0],hdr->addr3[1],hdr->addr3[2],
-    hdr->addr3[3],hdr->addr3[4],hdr->addr3[5]
+    hdr->addr3[3],hdr->addr3[4],hdr->addr3[5],
+    /* ADDR4 */
+    hdr->addr4[0],hdr->addr4[1],hdr->addr4[2],
+    hdr->addr4[3],hdr->addr4[4],hdr->addr4[5]
   );
 }
 
@@ -121,4 +125,3 @@ void loop() {
   wifi_sniffer_set_channel(channel);
   channel = (channel % WIFI_CHANNEL_MAX) + 1;
 }
-
